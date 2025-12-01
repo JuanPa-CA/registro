@@ -1,13 +1,14 @@
-        let inpNombre = document.getElementById("nombre");
+    let inpNombre = document.getElementById("nombre");
         let inpApellido = document.getElementById("apellido");
         let inpTelefono = document.getElementById("telefono");
         let registro = [];
         let idActualizar = null;
         let btnGuardar = document.getElementById("btnGuardar");
+        pintar();
 
         btnGuardar.addEventListener("click", () => {
             if (inpNombre.value === "" || inpApellido.value === "" || inpTelefono.value === "") {
-                alert("Todos los campos son obligatorios");
+                alert("Todos los campos son obligatorios.");
                 return;
             }
 
@@ -19,8 +20,7 @@
                     registro[indice].telefono = inpTelefono.value;
                 }
                 idActualizar = null;
-                btnGuardar.textContent = "Guardar";
-
+                btnGuardar.innerHTML = '<i class="bi bi-save me-2"></i> Guardar'; 
             } else {
                 let data = {
                     id: Date.now(),
@@ -30,7 +30,6 @@
                 };
                 registro.push(data);
             }
-
             pintar();
             limpiar();
         });
@@ -64,8 +63,10 @@
                 `;
 
                 tr.querySelector(".btn-delete").addEventListener("click", () => {
-                    registro.splice(indice, 1);
-                    pintar();
+                    if (confirm(`¿seguro de que quieres eliminar el registro ${item.id}?`)) {
+                        registro.splice(indice, 1);
+                        pintar();
+                    }
                 });
 
                 tr.querySelector(".btn-edit").addEventListener("click", () => {
@@ -73,9 +74,8 @@
                     inpApellido.value = item.apellido;
                     inpTelefono.value = item.telefono;
                     idActualizar = item.id;
-                    btnGuardar.textContent = "Actualizar";
+                    btnGuardar.innerHTML = '<i class="bi bi-arrow-clockwise me-2"></i> Actualizar'; 
                 });
-
                 document.getElementById("datos").appendChild(tr);
             });
         }
